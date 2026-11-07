@@ -1,4 +1,3 @@
-```sql
 -- =============================================================================
 -- SKRIP PEMBUATAN DATABASE DAN SKEMA SAFEASET v1.1 (BERSIH)
 -- Digunakan untuk MySQL 8.0+ / MariaDB di Laragon
@@ -203,8 +202,6 @@ CREATE TABLE transaction_logs (
     FOREIGN KEY (actor_id) REFERENCES users(id) ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
-```
--- Tabel Log Audit Akses & Transaksi
 CREATE TABLE IF NOT EXISTS `sessions` (
     `id` varchar(255) NOT NULL,
     `user_id` bigint UNSIGNED DEFAULT NULL,
