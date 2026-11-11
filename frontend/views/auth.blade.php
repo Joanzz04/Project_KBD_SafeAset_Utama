@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SafeAsset - Masuk atau Daftar</title>
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/logo_web.png') }}?v=2">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -27,10 +28,8 @@
     <div class="max-w-md w-full mx-auto bg-white rounded-xl shadow-2xl overflow-hidden my-auto">
         
         <!-- Header Card -->
-        <div class="bg-navy-dark text-white p-6 text-center">
-            <div class="w-12 h-12 border-2 border-[#b58360] rounded flex items-center justify-center text-[#b58360] mx-auto mb-2">
-                <i class="fa-solid fa-shield-halved text-2xl"></i>
-            </div>
+        <div class="bg-[#0f172a] text-white p-6 text-center">
+            <img src="{{ asset('assets/images/logo_web.png') }}" alt="SafeAsset Logo" class="h-16 w-auto mx-auto mb-3 object-contain">
             <h2 class="text-xl font-bold">SafeAsset Portal</h2>
             <p class="text-xs text-gray-400 mt-1">Pilih metode akses akun Anda di bawah ini</p>
         </div>

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SafeAsset - Protect Your Future</title>
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/logo_web.png') }}?v=2">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -17,25 +18,23 @@
 <body class="bg-gray-50 text-gray-800 font-sans">
 
     <!-- NAVBAR -->
-    <nav class="bg-navy-dark text-white px-8 py-4 flex items-center justify-between border-b border-gray-700">
+    <nav class="bg-[#0f172a] text-white px-8 py-4 flex items-center justify-between border-b border-gray-700">
         <!-- Logo -->
         <a href="{{ route('home') }}" class="flex items-center space-x-3">
-            <div class="w-10 h-10 border-2 border-[#b58360] rounded flex items-center justify-center text-[#b58360]">
-                <i class="fa-solid fa-shield-halved text-xl"></i>
-            </div>
+            <img src="{{ asset('assets/images/logo_web.png') }}" alt="SafeAsset Logo" class="h-12 w-auto object-contain">
             <div>
-                <span class="text-xl font-bold tracking-wider">Safe<span class="font-light text-gray-300">Asset</span></span>
-                <p class="text-[10px] text-gray-400 -mt-1">"The Safe Property Hub"</p>
+                <span class="text-xl font-bold tracking-wider text-white">Safe<span class="font-light text-gray-300">Asset</span></span>
+                <p class="text-[10px] text-gray-400 -mt-1">Your Trusted Property Partner</p>
             </div>
         </a>
 
         <!-- Menu Tengah -->
         <div class="hidden md:flex space-x-8 text-sm font-medium text-gray-300">
             <a href="{{ route('home') }}" class="text-white border-b-2 border-[#b58360] pb-1">Home</a>
-            <a href="#listings" class="hover:text-white">Properties</a>
-            <a href="#why" class="hover:text-white">Invest Securely</a>
-            <a href="#" class="hover:text-white">About Us</a>
-            <a href="#" class="hover:text-white">Contact</a>
+            <a href="#listings" class="hover:text-white transition">Properties</a>
+            <a href="#why" class="hover:text-white transition">Invest Securely</a>
+            <a href="#" class="hover:text-white transition">About Us</a>
+            <a href="#" class="hover:text-white transition">Contact</a>
         </div>
 
         <!-- Menu Kanan (Profil / Login & List Property) -->
@@ -44,11 +43,11 @@
                 <span class="text-sm text-gray-300">Halo, <b>{{ auth()->user()->username }}</b></span>
                 <form action="{{ route('logout') }}" method="POST" class="inline">
                     @csrf
-                    <button type="submit" class="text-xs bg-red-600 hover:bg-red-700 px-3 py-2 rounded">Logout</button>
+                    <button type="submit" class="text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded transition">Logout</button>
                 </form>
             @else
                 <!-- Tombol Ikon User mengarah ke halaman Login/Daftar -->
-                <a href="{{ route('auth.form') }}" class="w-9 h-9 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center text-gray-200" title="Login / Daftar">
+                <a href="{{ route('auth.form') }}" class="w-9 h-9 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center text-gray-200 transition" title="Login / Daftar">
                     <i class="fa-regular fa-user text-sm"></i>
                 </a>
             @endauth
