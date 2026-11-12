@@ -14,6 +14,7 @@ class User extends Authenticatable
     protected $fillable = [
         'username',
         'email',
+        'email_hash', // Tambahan untuk pencarian login email
         'phone',
         'password_hash',
         'status',
@@ -21,21 +22,31 @@ class User extends Authenticatable
         'lockout_until',
     ];
 
-    protected $hidden = ['password_hash'];
+    protected $hidden = [
+        'password_hash',
+        'email_hash',
+    ];
+
+    // Otomatis mengenkripsi email & phone di database, dan mendekripsinya saat dipanggil di web
+    protected function casts(): array
+    {
+        return [
+            'email' => 'encrypted',
+            'phone' => 'encrypted',
+        ];
+    }
 
     public function getAuthPassword()
     {
         return $this->password_hash;
     }
 
-    // Relasi ke tabel roles melalui tabel pivot user_roles
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id')
                     ->withPivot('status');
     }
 
-    // Fungsi bantuan untuk mengecek role user
     public function hasRole($roleName)
     {
         return $this->roles()->where('role_name', $roleName)->exists();
