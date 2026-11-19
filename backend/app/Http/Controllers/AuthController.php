@@ -89,7 +89,7 @@ class AuthController extends Controller
        $request->validate([
             'username' => 'required|string|max:100|unique:users,username',
             'email'    => 'required|email|max:255',
-            'phone'    => ['required', 'regex:/^[0-9]+$/', 'min:10', 'max:15'],
+            'phone'    => ['required', 'regex:/^[0-9]+$/', 'min:11', 'max:15'],
             'password' => [
                 'required',
                 'string',
@@ -102,7 +102,7 @@ class AuthController extends Controller
         ], [
             // Pesan Error Kustom Bahasa Indonesia
             'phone.regex'        => 'Nomor telepon tidak valid! Mohon masukkan dengan angka saja.',
-            'phone.min'          => 'Nomor telepon minimal harus 10 digit angka.',
+            'phone.min'          => 'Nomor telepon minimal harus 11 digit angka.',
             'phone.max'          => 'Nomor telepon maksimal 15 digit angka.',
             'password.min'       => 'Kata sandi minimal harus 8 karakter.',
             'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',

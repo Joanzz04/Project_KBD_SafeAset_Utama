@@ -37,32 +37,47 @@
             <a href="#" class="hover:text-white transition">Contact</a>
         </div>
 
-        <!-- Menu Kanan (Profil / Login & List Property) -->
+        <!-- Menu Kanan (Profil & Logout) -->
         <div class="flex items-center space-x-4">
             @auth
-                <span class="text-sm text-gray-300">Halo, <b>{{ auth()->user()->username }}</b></span>
+                <span class="text-sm text-gray-300 hidden sm:inline">Halo, <b>{{ auth()->user()->username }}</b></span>
+                
+                <!-- Tombol krem berubah menjadi tombol Profil Saya saat sudah login -->
+                <a href="{{ route('profile') }}" class="bg-[#e2dacb] text-gray-900 font-semibold text-sm px-4 py-2 rounded hover:bg-[#d4c8b4] transition flex items-center space-x-2">
+                    <i class="fa-solid fa-user-circle"></i>
+                    <span>Profil Saya</span>
+                </a>
+
                 <form action="{{ route('logout') }}" method="POST" class="inline">
                     @csrf
                     <button type="submit" class="text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded transition">Logout</button>
                 </form>
             @else
-                <!-- Tombol Ikon User mengarah ke halaman Login/Daftar -->
+                <!-- Saat belum login, mengarah ke halaman Login/Daftar -->
                 <a href="{{ route('auth.form') }}" class="w-9 h-9 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center text-gray-200 transition" title="Login / Daftar">
                     <i class="fa-regular fa-user text-sm"></i>
                 </a>
+                <a href="{{ route('auth.form') }}" class="bg-[#e2dacb] text-gray-900 font-semibold text-sm px-4 py-2 rounded hover:bg-[#d4c8b4] transition">
+                    Masuk / Profil
+                </a>
             @endauth
-
-            <a href="{{ auth()->check() ? '#' : route('auth.form') }}" class="bg-[#e2dacb] text-gray-900 font-semibold text-sm px-4 py-2 rounded hover:bg-[#d4c8b4] transition">
-                List Your Property
-            </a>
         </div>
     </nav>
 
-    <!-- NOTIFIKASI BERHASIL LOGIN/DAFTAR -->
+   <!-- NOTIFIKASI BERHASIL LOGIN/DAFTAR (Otomatis hilang dalam 3 detik) -->
     @if(session('success'))
-        <div class="bg-green-600 text-white text-center py-2 text-sm font-medium">
+        <div id="flash-alert" class="bg-green-600 text-white text-center py-2.5 text-sm font-medium transition-opacity duration-500 ease-out">
             {{ session('success') }}
         </div>
+        <script>
+            setTimeout(() => {
+                const alertBox = document.getElementById('flash-alert');
+                if (alertBox) {
+                    alertBox.style.opacity = '0'; // Efek memudar halus
+                    setTimeout(() => alertBox.remove(), 500); // Hapus elemen setelah memudar
+                }
+            }, 3000); // 3000 ms = 3 detik
+        </script>
     @endif
 
     <!-- HERO SECTION -->

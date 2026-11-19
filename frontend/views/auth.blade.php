@@ -85,14 +85,26 @@
                     <input type="text" name="username" value="{{ old('username') }}" required class="w-full px-3 py-2 border border-gray-300 rounded text-sm" placeholder="Contoh: budi_santoso">
                 </div>
 
+                <!-- Input Alamat Gmail dengan Validasi @gmail.com -->
                 <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">Alamat Email</label>
-                    <input type="email" name="email" value="{{ old('email') }}" required class="w-full px-3 py-2 border border-gray-300 rounded text-sm" placeholder="nama@email.com">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">Alamat Gmail</label>
+                    <input type="email" id="reg-email" name="email" value="{{ old('email') }}" oninput="validateRegisterForm()" required class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#9a6b4c]" placeholder="nama@gmail.com">
+                    
+                    <!-- Pesan Peringatan Merah (Muncul jika tidak berakhiran @gmail.com) -->
+                    <p id="email-error" class="text-[11px] text-red-600 font-medium mt-1 hidden">
+                        <i class="fa-solid fa-triangle-exclamation mr-1"></i> Wajib menggunakan alamat Gmail yang valid (berakhiran @gmail.com)!
+                    </p>
                 </div>
 
+                <!-- Input Nomor Telepon / WhatsApp dengan Validasi Angka Real-time -->
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 mb-1">Nomor Telepon / WhatsApp</label>
-                    <input type="text" name="phone" value="{{ old('phone') }}" required class="w-full px-3 py-2 border border-gray-300 rounded text-sm" placeholder="08123456789">
+                    <input type="text" id="reg-phone" name="phone" value="{{ old('phone') }}" oninput="validatePhoneInput(this)" required class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#9a6b4c]" placeholder="08123456789">
+                    
+                    <!-- Pesan Peringatan Merah (Muncul otomatis jika ada huruf/simbol) -->
+                    <p id="phone-error" class="text-[11px] text-red-600 font-medium mt-1 hidden">
+                        <i class="fa-solid fa-triangle-exclamation mr-1"></i> Mohon masukkan dengan angka saja!
+                    </p>
                 </div>
 
                 <!-- Keterangan Otomatis Role Buyer -->
@@ -101,18 +113,142 @@
                     Akun baru akan terdaftar sebagai <b>Pembeli (Buyer)</b>. Anda dapat mengajukan upgrade menjadi Penjual (Seller) nanti di halaman profil.
                 </div>
 
+                <!-- Input Kata Sandi & Ulangi Sandi  -->
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">Kata Sandi</label>
-                        <input type="password" name="password" required class="w-full px-3 py-2 border border-gray-300 rounded text-sm" placeholder="Min. 8 karakter">
+                        <div class="relative">
+                            <input type="password" id="reg-password" name="password" oninput="checkPasswordStrength(this.value)" onkeyup="checkPasswordStrength(this.value)" required class="w-full pl-3 pr-9 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#9a6b4c]" placeholder="Min. 8 karakter">
+                            <button type="button" onclick="togglePassword('reg-password', 'eye-reg-pass')" class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none" title="Lihat/Sembunyikan Sandi">
+                                <i id="eye-reg-pass" class="fa-regular fa-eye text-sm"></i>
+                            </button>
+                        </div>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">Ulangi Sandi</label>
-                        <input type="password" name="password_confirmation" required class="w-full px-3 py-2 border border-gray-300 rounded text-sm" placeholder="Ulangi sandi">
+                        <div class="relative">
+                            <input type="password" id="reg-password-confirm" name="password_confirmation" required class="w-full pl-3 pr-9 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#9a6b4c]" placeholder="Ulangi sandi">
+                            <button type="button" onclick="togglePassword('reg-password-confirm', 'eye-reg-confirm')" class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none" title="Lihat/Sembunyikan Sandi">
+                                <i id="eye-reg-confirm" class="fa-regular fa-eye text-sm"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <button type="submit" class="w-full bg-gold text-white font-semibold py-2.5 rounded text-sm transition mt-2">
+                <!-- Indikator Password Policy Real-time -->
+                <div class="bg-gray-50 p-3 rounded border border-gray-200 text-[11px] space-y-1.5 text-gray-500">
+                    <p class="font-semibold text-gray-700 mb-1">Syarat Keamanan Kata Sandi:</p>
+                    <div id="rule-length" class="flex items-center transition-colors duration-200">
+                        <i class="fa-solid fa-circle-xmark text-gray-400 mr-1.5 w-3.5"></i> Minimal 8 karakter
+                    </div>
+                    <div id="rule-case" class="flex items-center transition-colors duration-200">
+                        <i class="fa-solid fa-circle-xmark text-gray-400 mr-1.5 w-3.5"></i> Huruf besar (A-Z) & huruf kecil (a-z)
+                    </div>
+                    <div id="rule-number" class="flex items-center transition-colors duration-200">
+                        <i class="fa-solid fa-circle-xmark text-gray-400 mr-1.5 w-3.5"></i> Minimal 1 angka (0-9)
+                    </div>
+                    <div id="rule-symbol" class="flex items-center transition-colors duration-200">
+                        <i class="fa-solid fa-circle-xmark text-gray-400 mr-1.5 w-3.5"></i> Karakter spesial (!@#$%^&* dll)
+                    </div>
+                </div>
+
+                <!-- Script Langsung untuk Cek Kekuatan Password -->
+                <script>
+                    function checkPasswordStrength(val) {
+                        const rules = [
+                            { id: 'rule-length', valid: val.length >= 8 },
+                            { id: 'rule-case',   valid: /[a-z]/.test(val) && /[A-Z]/.test(val) },
+                            { id: 'rule-number', valid: /[0-9]/.test(val) },
+                            { id: 'rule-symbol', valid: /[^A-Za-z0-9]/.test(val) }
+                        ];
+
+                        rules.forEach(rule => {
+                            const el = document.getElementById(rule.id);
+                            if (!el) return;
+                            const icon = el.querySelector('i');
+                            if (rule.valid) {
+                                el.className = 'flex items-center text-green-600 font-semibold transition-colors duration-200';
+                                icon.className = 'fa-solid fa-circle-check text-green-600 mr-1.5 w-3.5';
+                            } else {
+                                el.className = 'flex items-center text-gray-500 transition-colors duration-200';
+                                icon.className = 'fa-solid fa-circle-xmark text-gray-400 mr-1.5 w-3.5';
+                            }
+                        });
+                    }
+                function validateRegisterForm() {
+                const emailInput = document.getElementById('reg-email');
+                const emailError = document.getElementById('email-error');
+                const phoneInput = document.getElementById('reg-phone');
+                const phoneError = document.getElementById('phone-error');
+                const submitBtn  = document.getElementById('btn-register');
+
+                let isEmailValid = true;
+                let isPhoneValid = true;
+
+                // 1. Validasi Gmail (Wajib format email valid dan berakhiran @gmail.com)
+                const emailVal = emailInput.value.trim();
+                const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/i;
+
+                if (emailVal.length > 0 && !gmailRegex.test(emailVal)) {
+                    isEmailValid = false;
+                    emailError.classList.remove('hidden');
+                    emailInput.classList.add('border-red-500', 'bg-red-50');
+                    emailInput.classList.remove('border-gray-300');
+                } else {
+                    emailError.classList.add('hidden');
+                    emailInput.classList.remove('border-red-500', 'bg-red-50');
+                    emailInput.classList.add('border-gray-300');
+                }
+
+                // 2. Validasi Nomor Telepon (Hanya angka & minimal 11 digit)
+                const phoneVal = phoneInput.value;
+                const hasNonNumber = /[^0-9]/.test(phoneVal);
+                const isTooShort = phoneVal.length > 0 && phoneVal.length < 11;
+
+                if (hasNonNumber) {
+                    isPhoneValid = false;
+                    phoneError.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i> Mohon masukkan dengan angka saja!';
+                    phoneError.classList.remove('hidden');
+                    phoneInput.classList.add('border-red-500', 'bg-red-50');
+                    phoneInput.classList.remove('border-gray-300');
+                } else if (isTooShort) {
+                    isPhoneValid = false;
+                    phoneError.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i> Nomor telepon minimal harus 11 digit angka!';
+                    phoneError.classList.remove('hidden');
+                    phoneInput.classList.add('border-red-500', 'bg-red-50');
+                    phoneInput.classList.remove('border-gray-300');
+                } else {
+                    phoneError.classList.add('hidden');
+                    phoneInput.classList.remove('border-red-500', 'bg-red-50');
+                    phoneInput.classList.add('border-gray-300');
+                }
+
+                // 3. Kunci tombol Daftar jika salah satu tidak valid
+                if (!isEmailValid || !isPhoneValid) {
+                    submitBtn.disabled = true;
+                    submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    }
+                }
+                function togglePassword(inputId, iconId) {
+                const input = document.getElementById(inputId);
+                const icon = document.getElementById(iconId);
+
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+                }
+                </script>
+
+                <button type="submit" id="btn-register" class="w-full bg-gold text-white font-semibold py-2.5 rounded text-sm transition mt-2">
                     Daftar Sebagai Pembeli
                 </button>
             </form>

@@ -1,3 +1,4 @@
+```sql
 -- =============================================================================
 -- SKRIP PEMBUATAN DATABASE DAN SKEMA SAFEASET v1.1 (BERSIH)
 -- Digunakan untuk MySQL 8.0+ / MariaDB di Laragon
@@ -202,6 +203,7 @@ CREATE TABLE transaction_logs (
     FOREIGN KEY (actor_id) REFERENCES users(id) ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
+-- Tabel Log Audit Akses & Transaksi
 CREATE TABLE IF NOT EXISTS `sessions` (
     `id` varchar(255) NOT NULL,
     `user_id` bigint UNSIGNED DEFAULT NULL,
@@ -213,3 +215,10 @@ CREATE TABLE IF NOT EXISTS `sessions` (
     KEY `sessions_user_id_index` (`user_id`),
     KEY `sessions_last_activity_index` (`last_activity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+```
+ALTER TABLE `users` 
+DROP INDEX `email`,
+MODIFY `email` TEXT NOT NULL,
+MODIFY `phone` TEXT NOT NULL,
+ADD COLUMN `email_hash` VARCHAR(64) NULL UNIQUE AFTER `email`;
