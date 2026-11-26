@@ -34,18 +34,15 @@
             <p class="text-xs text-gray-400 mt-1">Pilih metode akses akun Anda di bawah ini</p>
         </div>
 
-        <!-- Navigasi 3 Tab: Login | Daftar | Login Agent -->
-        <div class="grid grid-cols-3 border-b border-gray-200 bg-gray-100 text-xs font-semibold text-gray-600">
-            <button onclick="switchTab('login')" id="tab-login" class="py-3.5 text-center border-b-2 border-[#9a6b4c] text-[#9a6b4c] bg-white">
+        <!-- Tab Navigasi -->
+            <div class="flex border-b border-gray-200 bg-gray-50 text-sm font-medium text-gray-500">
+                <button type="button" id="tab-login" onclick="switchTab('login')" class="flex-1 py-3 text-center border-b-2 border-[#9a6b4c] text-[#9a6b4c] bg-white transition">
                 <i class="fa-solid fa-right-to-bracket mr-1"></i> Login
             </button>
-            <button onclick="switchTab('register')" id="tab-register" class="py-3.5 text-center hover:bg-gray-50">
+            <button type="button" id="tab-register" onclick="switchTab('register')" class="flex-1 py-3 text-center hover:text-gray-700 transition">
                 <i class="fa-solid fa-user-plus mr-1"></i> Daftar
             </button>
-            <button onclick="switchTab('agent')" id="tab-agent" class="py-3.5 text-center hover:bg-gray-50">
-                <i class="fa-solid fa-user-tie mr-1"></i> Login Agent
-            </button>
-        </div>
+            </div>
 
         <div class="p-6">
             <!-- Pesan Error Validasi -->
@@ -287,16 +284,16 @@
 
     <!-- Script Pengaturan Tab -->
     <script>
-        function switchTab(tab) {
-            const forms = ['login', 'register', 'agent'];
-            forms.forEach(f => {
-                document.getElementById('form-' + f).classList.add('hidden');
-                document.getElementById('tab-' + f).classList.remove('border-b-2', 'border-[#9a6b4c]', 'text-[#9a6b4c]', 'bg-white');
-            });
+    function switchTab(tab) {
+        const forms = ['login', 'register'];
+        forms.forEach(f => {
+            document.getElementById('form-' + f).classList.add('hidden');
+            document.getElementById('tab-' + f).classList.remove('border-b-2', 'border-[#9a6b4c]', 'text-[#9a6b4c]', 'bg-white');
+        });
 
-            document.getElementById('form-' + tab).classList.remove('hidden');
-            document.getElementById('tab-' + tab).classList.add('border-b-2', 'border-[#9a6b4c]', 'text-[#9a6b4c]', 'bg-white');
-        }
+        document.getElementById('form-' + tab).classList.remove('hidden');
+        document.getElementById('tab-' + tab).classList.add('border-b-2', 'border-[#9a6b4c]', 'text-[#9a6b4c]', 'bg-white');
+    }
     </script>
 </body>
 </html>

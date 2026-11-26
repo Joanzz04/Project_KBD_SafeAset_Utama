@@ -27,13 +27,12 @@ class AuthController extends Controller
         return view('auth');
     }
 
-    // 3. Proses Login (Mendukung pencarian email yang terenkripsi)
+    // 3. Proses Login Terpadu (Untuk Buyer, Seller, Agent, dan Admin)
     public function login(Request $request)
     {
         $request->validate([
-            'login'      => 'required|string',
-            'password'   => 'required|string',
-            'login_type' => 'required|in:user,agent',
+            'login'    => 'required|string',
+            'password' => 'required|string',
         ]);
 
         // Buat hash SHA-256 dari input login (jika user memasukkan email)
@@ -58,18 +57,15 @@ class AuthController extends Controller
         }
 
         if (Hash::check($request->password, $user->password_hash)) {
-            if ($request->login_type === 'agent' && !$user->hasRole('AGENT')) {
-                return back()->withErrors(['login' => 'Akses ditolak! Akun Anda bukan akun Agent resmi.']);
-            }
-
-            if ($request->login_type === 'user' && $user->hasRole('AGENT')) {
-                return back()->withErrors(['login' => 'Akun Agent wajib masuk melalui tab "Login sebagai Agent".']);
-            }
-
             $user->update(['failed_login_attempts' => 0, 'lockout_until' => null]);
 
             Auth::login($user);
             $request->session()->regenerate();
+
+            // Opsional: jika nanti ada halaman khusus Agent, bisa diarahkan di sini
+            // if ($user->hasRole('AGENT')) {
+            //     return redirect()->route('agent.dashboard');
+            // }
 
             return redirect()->route('home')->with('success', 'Selamat datang kembali, ' . $user->username . '!');
         }
